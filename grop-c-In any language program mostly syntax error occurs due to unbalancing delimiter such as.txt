@@ -1,0 +1,103 @@
+Corrected Code
+#include <iostream>
+using namespace std;
+
+#define SIZE 100
+
+class StackExp
+{
+    int top;
+    char stk[SIZE];
+
+public:
+    StackExp()
+    {
+        top = -1;
+    }
+
+    void push(char x)
+    {
+        stk[++top] = x;
+    }
+
+    char pop()
+    {
+        return stk[top--];
+    }
+
+    int isFull()
+    {
+        return top == SIZE - 1;
+    }
+
+    int isEmpty()
+    {
+        return top == -1;
+    }
+
+    bool checkExpression(char exp[])
+    {
+        for (int i = 0; exp[i] != '\0'; i++)
+        {
+            char ch = exp[i];
+
+            if (ch == '(' || ch == '[' || ch == '{')
+            {
+                if (isFull())
+                    return false;
+
+                push(ch);
+            }
+            else if (ch == ')' || ch == ']' || ch == '}')
+            {
+                if (isEmpty())
+                    return false;
+
+                char topChar = pop();
+
+                if ((ch == ')' && topChar != '(') ||
+                    (ch == ']' && topChar != '[') ||
+                    (ch == '}' && topChar != '{'))
+                {
+                    return false;
+                }
+            }
+        }
+
+        return isEmpty();
+    }
+};
+
+int main()
+{
+    StackExp s1;
+    char exp[100];
+
+    cout << "Parenthesis Checker" << endl;
+    cout << "Enter the expression: ";
+    cin >> exp;
+
+    if (s1.checkExpression(exp))
+    {
+        cout << "Expression is well parenthesized.";
+    }
+    else
+    {
+        cout << "Expression is not well parenthesized.";
+    }
+
+    return 0;
+}
+
+
+Sample Output
+1. Valid expression
+Parenthesis Checker
+Enter the expression: {[a+b]*(c+d)}
+Expression is well parenthesized.
+
+
+2. Invalid expression
+Parenthesis Checker
+Enter the expression: {[(a+b]*c}
+Expression is not well parenthesized.
